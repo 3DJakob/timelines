@@ -43,13 +43,27 @@ div#projects {
 
 div.project {
   width: 100vw;
-  height: 60px;
+  /*height: 60px;*/
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
+  overflow: hidden;
 }
 
-div.project h1 {
+div.project div {
+  display: flex;
+  flex-direction: column;
+  transition: up 300ms linear;
+}
 
+div.project div button {
+  margin: 5px;
+}
+
+div.project h2 {
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+  width: 100vw;
 }
