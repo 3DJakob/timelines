@@ -1,14 +1,15 @@
-# A Blank PhoneGap App
+# TimeLines
+
+## What is TimeLines?
+
+TimeLines is a WIP app for maneging many projects at the same time.
 
 ## Usage
 
-### PhoneGap CLI
+### Run static app
 
-    $ phonegap create my-app --template blank
+Clone the repository and open index.html in your browser.
 
-### Desktop
+### Run phonegap app
 
-In your browser, open the file:
-
-    /www/index.html
-
+Clone the repository and open it in the phonegap app.
