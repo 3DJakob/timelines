@@ -1,9 +1,9 @@
-projects = []
+var projects = []
 
 function newProject () {
-  var projectName = prompt("Project name","")
-  var color = 'rgb(' + (76 + Math.round(Math.random()*50 - 25)) + ', ' + (189 + Math.round(Math.random()*50 - 25)) + ', ' + (255 - Math.round(Math.random()*25)) + ')'
-  if (projectName !== '' && projectName !== null) {  
+  var projectName = prompt('Project name', '')
+  var color = 'rgb(' + (76 + Math.round(Math.random() * 50 - 25)) + ', ' + (189 + Math.round(Math.random() * 50 - 25)) + ', ' + (255 - Math.round(Math.random() * 25)) + ')'
+  if (projectName !== '' && projectName !== null) {
     var project = {name: projectName, color: color, open: false}
     projects.push(project)
     render()
@@ -11,7 +11,7 @@ function newProject () {
 }
 
 function render () {
-  target = document.getElementById('projects')
+  var target = document.getElementById('projects')
   target.innerHTML = ''
   if (projects.lenght !== 0) {
     projects.forEach(function (project) {
@@ -24,7 +24,6 @@ function render () {
 
       div.appendChild(h2)
       target.appendChild(div)
-
     })
   } else {
     target.appendChild('')
