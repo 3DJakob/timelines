@@ -54,7 +54,15 @@ div.project {
 div.project div {
   display: flex;
   flex-direction: column;
-  transition: up 300ms linear;
+  transition: 300ms linear;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 100vw;
+}
+
+div.project div input {
+  margin: 5px;
+  padding: 3px;
+  border: none;
 }
 
 div.project div button {
