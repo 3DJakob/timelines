@@ -82,11 +82,9 @@ div#projects {
 
 div.project {
   width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
+  height: 89px;
   overflow: hidden;
+  transition: 200ms smooth;
 }
 
 div.project div {

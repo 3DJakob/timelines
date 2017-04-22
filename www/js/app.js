@@ -47,13 +47,14 @@ function deleteProject (project) {
 }
 
 function expand (project) {
-  var element = document.getElementById(project)
-  var style = window.getComputedStyle(element)
-  var height = style.getPropertyValue('height')
-  if (height === '0px') {
-    element.style.maxHeight = '100vh'
+  var wrapper = document.getElementById(project)
+  var content = document.getElementById('content' + project)
+
+  if (wrapper.clientHeight === 89) {
+    var computedHeight = content.clientHeight + 89
+    wrapper.style.height = computedHeight + 'px'
   } else {
-    element.style.maxHeight = '0'
+    wrapper.style.height = '89px'
   }
 }
 
@@ -73,6 +74,8 @@ function render () {
       div.style.backgroundColor = project.color
       div.classList = 'project'
 
+      div.setAttribute('id', project.name)
+
       h2.textContent = project.name + ' ▿'
       h2.addEventListener('click', function () {
         expand(project.name)
@@ -87,8 +90,7 @@ function render () {
 
       button.textContent = 'New activity'
 
-      content.setAttribute('id', project.name)
-      content.style.maxHeight = '0'
+      content.setAttribute('id', 'content' + project.name)
 
       row.appendChild(h2)
       row.appendChild(remove)
