@@ -54,6 +54,7 @@ div.project div.row {
 }
 
 div.project div.row h2 {
+  margin: 0;
   display: flex;
   flex: 1;
   align-items: center;
@@ -93,6 +94,21 @@ div.project div {
   transition: 300ms smooth;
   background-color: rgba(255, 255, 255, 0.2);
   width: 100vw;
+}
+
+div.project div.activity {
+  display: flex;
+  flex-direction: row;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+div.project div.activity div {
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border-radius: 100%;
+  margin: auto 20px;
+
 }
 
 div.project div input {
