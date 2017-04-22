@@ -13,11 +13,20 @@ function newProject () {
 
 function editToggle () {
   edit = !edit
-  var elements = document.getElementsByClassName('deleteBtn')
   if (edit === true) {
     document.getElementsByTagName('body')[0].className = 'editmode'
   } else {
     document.getElementsByTagName('body')[0].className = 'standard'
+  }
+}
+
+function deleteProject (project) {
+  for (var i = 0; i < projects.length; i++) {
+    if (projects[i].name === project) {
+      projects.splice(i, 1)
+      editToggle()
+      render()
+    }
   }
 }
 
@@ -45,15 +54,23 @@ function render () {
       var input = document.createElement('input')
       var button = document.createElement('button')
 
+      div.style.backgroundColor = project.color
+      div.classList = 'project'
+
+      h2.textContent = project.name + ' ▿'
       h2.addEventListener('click', function () {
         expand(project.name)
       })
-      div.style.backgroundColor = project.color
-      div.classList = 'project'
-      h2.textContent = project.name + ' ▿'
+
       row.classList = 'row'
+
       remove.textContent = 'Delete'
+      remove.addEventListener('click', function () {
+        deleteProject(project.name)
+      })
+
       button.textContent = 'New activity'
+
       content.setAttribute('id', project.name)
       content.style.maxHeight = '0'
 

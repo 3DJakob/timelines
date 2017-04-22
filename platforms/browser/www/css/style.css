@@ -17,9 +17,20 @@ div.page {
   flex-direction: column;
 }
 
-h1, h2, h3, a, p {
+h1, h2, h3, a, p, header {
   font-family: 'Open Sans', sans-serif;
   color: #fff;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+header {
+  padding: 10px 14px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 h1, h2, h3, button {
@@ -36,6 +47,34 @@ button {
   border-radius: 3px;
 }
 
+div.project div.row {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+div.project div.row h2 {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+div.project div.row button {
+  height: 89px;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  background-color: red;
+  transition: 300ms linear;
+
+  width: 0;
+}
+
+.editmode div.project div.row button {
+  width: 89px;
+}
+
 div#projects {
   width: 100vw;
   margin-top: 40px;
@@ -43,7 +82,6 @@ div#projects {
 
 div.project {
   width: 100vw;
-  /*height: 60px;*/
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -54,16 +92,17 @@ div.project {
 div.project div {
   display: flex;
   flex-direction: column;
-  transition: up 300ms linear;
+  transition: 300ms linear;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 100vw;
+}
+
+div.project div input {
+  margin: 5px;
+  padding: 3px;
+  border: none;
 }
 
 div.project div button {
   margin: 5px;
-}
-
-div.project h2 {
-  text-align: center;
-  margin: 0;
-  padding: 20px;
-  width: 100vw;
 }
