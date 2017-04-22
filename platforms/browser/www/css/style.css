@@ -66,7 +66,7 @@ div.project div.row button {
   margin: 0;
   border-radius: 0;
   background-color: red;
-  transition: 300ms linear;
+  transition: 200ms smooth;
 
   width: 0;
 }
@@ -92,7 +92,7 @@ div.project {
 div.project div {
   display: flex;
   flex-direction: column;
-  transition: 300ms linear;
+  transition: 300ms smooth;
   background-color: rgba(255, 255, 255, 0.2);
   width: 100vw;
 }

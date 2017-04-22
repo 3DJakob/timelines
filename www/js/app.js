@@ -1,12 +1,27 @@
 var projects = []
 var edit = false
 
+function storageWrite () {
+  var projectsStorage = JSON.stringify(projects)
+  localStorage.setItem('projects', projectsStorage)
+}
+
+function storageRead () {
+  projects = JSON.parse(localStorage.getItem('projects'))
+  if (projects === null) {
+    projects = []
+  }
+  storageWrite()
+  render()
+}
+
 function newProject () {
   var projectName = prompt('Project name', '')
   var color = 'rgb(' + (76 + Math.round(Math.random() * 50 - 25)) + ', ' + (189 + Math.round(Math.random() * 50 - 25)) + ', ' + (255 - Math.round(Math.random() * 25)) + ')'
   if (projectName !== '' && projectName !== null) {
     var project = {name: projectName, color: color, height: 0}
     projects.push(project)
+    storageWrite()
     render()
   }
 }
@@ -25,6 +40,7 @@ function deleteProject (project) {
     if (projects[i].name === project) {
       projects.splice(i, 1)
       editToggle()
+      storageWrite()
       render()
     }
   }
