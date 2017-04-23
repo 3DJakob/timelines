@@ -54,7 +54,7 @@ function expand (project) {
   var wrapper = document.getElementById(project)
   var content = document.getElementById('content' + project)
 
-  var height = window.getComputedStyle(wrapper).getPropertyValue('width')
+  var height = window.getComputedStyle(wrapper).getPropertyValue('height')
   wrapper.style.height = height
 
   if (wrapper.clientHeight === 89) {
