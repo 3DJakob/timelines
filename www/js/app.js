@@ -78,6 +78,21 @@ function addActivity (project) {
   render()
 }
 
+function activityCompletion (project, index) {
+  projects[findProject(project)].activityIndex = index
+
+  for (var i = 0; i < projects[findProject(project)].activities.length - 1; i++) {
+    var clearElement = document.getElementById('line' + projects[findProject(project)].activities[i].name)
+    clearElement.style.height = 0
+  }
+
+  for (i = 0; i < index; i++) {
+    var element = document.getElementById('line' + projects[findProject(project)].activities[i].name)
+    element.style.height = '100%'
+  }
+  storageWrite()
+}
+
 function render () {
   var target = document.getElementById('projects')
   target.innerHTML = ''
@@ -111,19 +126,24 @@ function render () {
         deleteProject(project.name)
       })
 
-      for (var i = 0; i < projects[findProject(project.name)].activities.length; i++) {
+      for (let i = 0; i < projects[findProject(project.name)].activities.length; i++) {
         var activity = document.createElement('div')
         var dot = document.createElement('div')
         var line = document.createElement('div')
         var activitytext = document.createElement('h3')
 
         activity.classList = 'activity'
+        activity.addEventListener('click', function () {
+          activityCompletion(project.name, i)
+        })
         activitytext.textContent = projects[findProject(project.name)].activities[i].name
-        line.setAttribute('id', 'line' + project.name)
+        line.setAttribute('id', 'line' + projects[findProject(project.name)].activities[i].name)
+        line.classList = 'line'
+        if (projects[findProject(project.name)].activityIndex > i) {
+          line.style.height = '100%'
+        }
 
-        if (i === projects[findProject(project.name)].activities.length - 1) {
-
-        } else {
+        if (i !== projects[findProject(project.name)].activities.length - 1) {
           dot.appendChild(line)
         }
         activity.appendChild(dot)

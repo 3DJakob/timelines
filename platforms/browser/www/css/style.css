@@ -24,7 +24,6 @@ h1, h2, h3, a, p, header {
 
 h1 {
   font-size: 28px;
-  text-align: center;
 }
 
 header {
@@ -36,6 +35,7 @@ header {
 
 h1, h2, h3, button {
   font-family: 'Comfortaa', cursive;
+  text-align: center;
 }
 
 button {
@@ -129,13 +129,14 @@ div.project div.activity div div {
 
   position: absolute;
   left: 37px;
-  height: 100%;
+  height: 0;
   background-color: #fff;
   width: 5px;
 }
 
 div.project div.activity h3 {
   margin-right: 30px;
+  text-align: left;
 }
 
 div.project div input {
