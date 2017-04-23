@@ -114,11 +114,18 @@ function render () {
       for (var i = 0; i < projects[findProject(project.name)].activities.length; i++) {
         var activity = document.createElement('div')
         var dot = document.createElement('div')
+        var line = document.createElement('div')
         var activitytext = document.createElement('h3')
 
         activity.classList = 'activity'
         activitytext.textContent = projects[findProject(project.name)].activities[i].name
+        line.setAttribute('id', 'line' + project.name)
 
+        if (i === projects[findProject(project.name)].activities.length - 1) {
+
+        } else {
+          dot.appendChild(line)
+        }
         activity.appendChild(dot)
         activity.appendChild(activitytext)
         content.appendChild(activity)

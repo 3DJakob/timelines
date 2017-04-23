@@ -24,6 +24,7 @@ h1, h2, h3, a, p, header {
 
 h1 {
   font-size: 28px;
+  text-align: center;
 }
 
 header {
@@ -61,6 +62,7 @@ div.project div.row h2 {
   justify-content: center;
 }
 
+/*delete button*/
 div.project div.row button {
   height: 89px;
   padding: 0;
@@ -86,35 +88,61 @@ div.project {
   height: 89px;
   overflow: hidden;
   transition: 200ms smooth;
+  /*-webkit-transition: 200ms smooth;*/
+  -webkit-transition: -webkit-transform 200ms smooth;
 }
 
 div.project div {
   display: flex;
   flex-direction: column;
   transition: 300ms smooth;
+  /*-webkit-transition: 300ms smooth;*/
+  -webkit-transition: -webkit-transform 300ms smooth;
   background-color: rgba(255, 255, 255, 0.2);
   width: 100vw;
 }
 
 div.project div.activity {
   display: flex;
+  position: relative;
   flex-direction: row;
+  padding: 30px 0;
   background-color: rgba(0, 0, 0, 0);
 }
 
+/*The bullet*/
 div.project div.activity div {
   width: 20px;
   height: 20px;
   background-color: #fff;
+  border: 1px solid #fff;
   border-radius: 100%;
-  margin: auto 20px;
+  margin: 19px 30px;
+  flex-shrink: 0;
+}
 
+/*The completion line*/
+div.project div.activity div div {
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+
+  position: absolute;
+  left: 37px;
+  height: 100%;
+  background-color: #fff;
+  width: 5px;
+}
+
+div.project div.activity h3 {
+  margin-right: 30px;
 }
 
 div.project div input {
   margin: 5px;
-  padding: 3px;
+  padding: 13.5px;
   border: none;
+  border-radius: 3px;
 }
 
 div.project div button {

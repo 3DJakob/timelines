@@ -27,7 +27,7 @@ function newProject () {
   var projectName = prompt('Project name', '')
   var color = 'rgb(' + (76 + Math.round(Math.random() * 50 - 25)) + ', ' + (189 + Math.round(Math.random() * 50 - 25)) + ', ' + (255 - Math.round(Math.random() * 25)) + ')'
   if (projectName !== '' && projectName !== null) {
-    var project = {name: projectName, color: color, expanded: false, activities: []}
+    var project = {name: projectName, color: color, expanded: false, activities: [], activityIndex: 0}
     projects.push(project)
     storageWrite()
     render()
@@ -114,11 +114,18 @@ function render () {
       for (var i = 0; i < projects[findProject(project.name)].activities.length; i++) {
         var activity = document.createElement('div')
         var dot = document.createElement('div')
+        var line = document.createElement('div')
         var activitytext = document.createElement('h3')
 
         activity.classList = 'activity'
         activitytext.textContent = projects[findProject(project.name)].activities[i].name
+        line.setAttribute('id', 'line' + project.name)
 
+        if (i === projects[findProject(project.name)].activities.length - 1) {
+
+        } else {
+          dot.appendChild(line)
+        }
         activity.appendChild(dot)
         activity.appendChild(activitytext)
         content.appendChild(activity)
