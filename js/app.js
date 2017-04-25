@@ -15,8 +15,8 @@ function storageRead () {
   render()
 }
 
-function guid() {
-  function s4() {
+function guid () {
+  function s4 () {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
       .substring(1)
@@ -96,8 +96,8 @@ function activityCompletion (project, index) {
   for (var i = 0; i < projects[findProject(project)].activities.length; i++) {
     var clearElement = document.getElementById(projects[findProject(project)].activities[i].id)
     if (index < lastIndex) {
-      if (i+1 >= index) {
-        delayTime = 0.15*(lastIndex-i-1)
+      if (i + 1 >= index) {
+        delayTime = 0.15 * (lastIndex - i - 1)
       }
       clearElement.style.transitionDelay = delayTime + 's'
       clearElement.parentNode.style.transitionDelay = delayTime + 's'
@@ -108,7 +108,7 @@ function activityCompletion (project, index) {
 
   delayTime = 0
 
-  for (i = 0; i < index-1; i++) {
+  for (i = 0; i < index - 1; i++) {
     var element = document.getElementById(projects[findProject(project)].activities[i].id)
     if (index > lastIndex) {
       if (i >= lastIndex) {
@@ -172,15 +172,15 @@ function render () {
 
         activity.classList = 'activity'
         activity.addEventListener('click', function () {
-          activityCompletion(project.name, i+1)
+          activityCompletion(project.name, i + 1)
         })
         activitytext.textContent = projects[findProject(project.name)].activities[i].name
         line.setAttribute('id', projects[findProject(project.name)].activities[i].id)
         line.classList = 'line'
-        if (projects[findProject(project.name)].activityIndex-1 > i) {
+        if (projects[findProject(project.name)].activityIndex - 1 > i) {
           line.style.height = '100%'
           dot.style.backgroundColor = 'rgba(255, 255, 255, 1)'
-        } else if (projects[findProject(project.name)].activityIndex-1 === i) {
+        } else if (projects[findProject(project.name)].activityIndex - 1 === i) {
           dot.style.backgroundColor = 'rgba(255, 255, 255, 1)'
         }
 
