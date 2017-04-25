@@ -33,6 +33,15 @@ function findProject (id) {
   return false
 }
 
+function findActivity (projectId, activityId) {
+  for (var i = 0; i < projects[findProject(projectId)].activities.length; i++) {
+    if (projects[findProject(projectId)].activities[i].id === activityId) {
+      return i
+    }
+  }
+  return false
+}
+
 function newProject () {
   var projectName = prompt('Project name', '')
   var color = 'rgb(' + (76 + Math.round(Math.random() * 50 - 25)) + ', ' + (189 + Math.round(Math.random() * 50 - 25)) + ', ' + (255 - Math.round(Math.random() * 25)) + ')'
@@ -81,9 +90,21 @@ function expand (id) {
 function addActivity (id) {
   var input = document.getElementById('input' + id)
   var name = input.value
-  var activity = {name: name, completion: false, id: guid()}
-  projects[findProject(id)].activities.push(activity)
-  input.value = ''
+  if (name !== '') {
+    input.style.backgroundColor = '#fff'
+    var activity = {name: name, completion: false, id: guid()}
+    projects[findProject(id)].activities.push(activity)
+    input.value = ''
+    storageWrite()
+    render()
+  } else {
+    input.style.backgroundColor = '#ffe5e5'
+  }
+}
+
+function deleteActivity (projectId, activityId) {
+  projects[findProject(projectId)].activities.splice(findActivity(projectId, activityId), 1)
+  editToggle()
   storageWrite()
   render()
 }
@@ -91,6 +112,11 @@ function addActivity (id) {
 function activityCompletion (id, index) {
   var lastIndex = projects[findProject(id)].activityIndex
   var delayTime = 0
+
+  if (index === lastIndex) {
+    index = index - 1
+  }
+
   projects[findProject(id)].activityIndex = index
 
   for (var i = 0; i < projects[findProject(id)].activities.length; i++) {
@@ -121,12 +147,14 @@ function activityCompletion (id, index) {
     element.style.height = '100%'
     element.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 1)'
   }
+
   var lastDot = document.getElementById(projects[findProject(id)].activities[i].id)
-  lastDot.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 1)'
-  if (index === 1 && lastIndex === 1) {
-    projects[findProject(id)].activityIndex = 0
+  if (index === 0) {
     lastDot.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 0)'
+  } else {
+    lastDot.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 1)'
   }
+
   lastDot.parentNode.style.transitionDelay = 0 + 's'
   storageWrite()
 }
@@ -169,6 +197,7 @@ function render () {
         var dot = document.createElement('div')
         var line = document.createElement('div')
         var activitytext = document.createElement('h3')
+        var removeActivity = document.createElement('button')
 
         activity.classList = 'activity'
         activity.addEventListener('click', function () {
@@ -187,9 +216,17 @@ function render () {
         if (projects[findProject(project.id)].activityIndex === 0) {
           dot.style.backgroundColor = 'rgba(0, 0, 0, 0)'
         }
+
+        let activityId = projects[findProject(project.id)].activities[i].id
+        removeActivity.textContent = 'Delete'
+        removeActivity.addEventListener('click', function () {
+          deleteActivity(project.id, activityId)
+        })
+
         dot.appendChild(line)
         activity.appendChild(dot)
         activity.appendChild(activitytext)
+        activity.appendChild(removeActivity)
         content.appendChild(activity)
       }
 

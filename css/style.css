@@ -57,6 +57,8 @@ button {
 }
 
 div.project div.row {
+  height: 89px;
+  position: relative;
   flex-direction: row;
   flex-wrap: nowrap;
   background-color: rgba(255, 255, 255, 0);
@@ -68,16 +70,23 @@ div.project div.row h2 {
   flex: 1;
   align-items: center;
   justify-content: center;
+  transition: 0.2s;
+}
+
+.editmode div.project div.row h2 {
+  transform: translateX(-89px);
 }
 
 /*delete button*/
 div.project div.row button {
-  height: 89px;
   padding: 0;
   margin: 0;
   border-radius: 0;
   background-color: red;
   transition: width 0.3s;
+  position: absolute;
+  height: 100%;
+  right: 0;
 
   width: 0;
 }
@@ -112,6 +121,11 @@ div.project div.activity {
   flex-direction: row;
   padding: 30px 0;
   background-color: rgba(0, 0, 0, 0);
+  transition: transform 0.2s;
+}
+
+.editmode div.project div.activity {
+  transform: translateX(-72px);
 }
 
 /*The bullet*/
@@ -137,6 +151,24 @@ div.project div.activity div div {
   background-color: #fff;
   width: 7px;
   border: none;
+}
+
+/*The delete button*/
+div.project div.activity button {
+  align-self: center;
+  position: absolute;
+  right: 0;
+  top: 35px;
+  width: 0;
+  padding: 10px 0;
+  transition: 0.2s;
+
+  transform: translateX(72px);
+}
+
+.editmode div.project div.activity button {
+  width: 79px;
+  padding: 10px;
 }
 
 div.project div.activity h3 {
