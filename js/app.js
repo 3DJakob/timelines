@@ -24,9 +24,9 @@ function guid () {
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
 }
 
-function findProject (projectName) {
+function findProject (id) {
   for (var i = 0; i < projects.length; i++) {
-    if (projects[i].name === projectName) {
+    if (projects[i].id === id) {
       return i
     }
   }
@@ -36,8 +36,8 @@ function findProject (projectName) {
 function newProject () {
   var projectName = prompt('Project name', '')
   var color = 'rgb(' + (76 + Math.round(Math.random() * 50 - 25)) + ', ' + (189 + Math.round(Math.random() * 50 - 25)) + ', ' + (255 - Math.round(Math.random() * 25)) + ')'
-  if (projectName !== '' && projectName !== null && findProject(projectName) === false) {
-    var project = {name: projectName, color: color, expanded: false, activities: [], activityIndex: 0}
+  if (projectName !== '' && projectName !== null) {
+    var project = {id: guid(), name: projectName, color: color, expanded: false, activities: [], activityIndex: 0}
     projects.push(project)
     storageWrite()
     render()
@@ -53,16 +53,16 @@ function editToggle () {
   }
 }
 
-function deleteProject (project) {
-  projects.splice(findProject(project), 1)
+function deleteProject (id) {
+  projects.splice(findProject(id), 1)
   editToggle()
   storageWrite()
   render()
 }
 
-function expand (project) {
-  var wrapper = document.getElementById(project)
-  var content = document.getElementById('content' + project)
+function expand (id) {
+  var wrapper = document.getElementById(id)
+  var content = document.getElementById('content' + id)
 
   var height = window.getComputedStyle(wrapper).getPropertyValue('height')
   wrapper.style.height = height
@@ -70,31 +70,31 @@ function expand (project) {
   if (wrapper.clientHeight === 89) {
     var computedHeight = content.clientHeight + 89
     wrapper.style.height = computedHeight + 'px'
-    projects[findProject(project)].expanded = true
+    projects[findProject(id)].expanded = true
   } else {
     wrapper.style.height = '89px'
-    projects[findProject(project)].expanded = false
+    projects[findProject(id)].expanded = false
   }
   storageWrite()
 }
 
-function addActivity (project) {
-  var input = document.getElementById('input' + project)
+function addActivity (id) {
+  var input = document.getElementById('input' + id)
   var name = input.value
   var activity = {name: name, completion: false, id: guid()}
-  projects[findProject(project)].activities.push(activity)
+  projects[findProject(id)].activities.push(activity)
   input.value = ''
   storageWrite()
   render()
 }
 
-function activityCompletion (project, index) {
-  var lastIndex = projects[findProject(project)].activityIndex
+function activityCompletion (id, index) {
+  var lastIndex = projects[findProject(id)].activityIndex
   var delayTime = 0
-  projects[findProject(project)].activityIndex = index
+  projects[findProject(id)].activityIndex = index
 
-  for (var i = 0; i < projects[findProject(project)].activities.length; i++) {
-    var clearElement = document.getElementById(projects[findProject(project)].activities[i].id)
+  for (var i = 0; i < projects[findProject(id)].activities.length; i++) {
+    var clearElement = document.getElementById(projects[findProject(id)].activities[i].id)
     if (index < lastIndex) {
       if (i + 1 >= index) {
         delayTime = 0.15 * (lastIndex - i - 1)
@@ -109,7 +109,7 @@ function activityCompletion (project, index) {
   delayTime = 0
 
   for (i = 0; i < index - 1; i++) {
-    var element = document.getElementById(projects[findProject(project)].activities[i].id)
+    var element = document.getElementById(projects[findProject(id)].activities[i].id)
     if (index > lastIndex) {
       if (i >= lastIndex) {
         delayTime = delayTime + 0.15
@@ -121,10 +121,10 @@ function activityCompletion (project, index) {
     element.style.height = '100%'
     element.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 1)'
   }
-  var lastDot = document.getElementById(projects[findProject(project)].activities[i].id)
+  var lastDot = document.getElementById(projects[findProject(id)].activities[i].id)
   lastDot.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 1)'
   if (index === 1 && lastIndex === 1) {
-    projects[findProject(project)].activityIndex = 0
+    projects[findProject(id)].activityIndex = 0
     lastDot.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 0)'
   }
   lastDot.parentNode.style.transitionDelay = 0 + 's'
@@ -146,25 +146,25 @@ function render () {
 
       div.style.backgroundColor = project.color
       div.classList = 'project'
-      if (projects[findProject(project.name)].expanded) {
+      if (projects[findProject(project.id)].expanded) {
         div.style.height = 'auto'
       }
 
-      div.setAttribute('id', project.name)
+      div.setAttribute('id', project.id)
 
       h2.textContent = project.name + ' ▿'
       h2.addEventListener('click', function () {
-        expand(project.name)
+        expand(project.id)
       })
 
       row.classList = 'row'
 
       remove.textContent = 'Delete'
       remove.addEventListener('click', function () {
-        deleteProject(project.name)
+        deleteProject(project.id)
       })
 
-      for (let i = 0; i < projects[findProject(project.name)].activities.length; i++) {
+      for (let i = 0; i < projects[findProject(project.id)].activities.length; i++) {
         var activity = document.createElement('div')
         var dot = document.createElement('div')
         var line = document.createElement('div')
@@ -172,19 +172,19 @@ function render () {
 
         activity.classList = 'activity'
         activity.addEventListener('click', function () {
-          activityCompletion(project.name, i + 1)
+          activityCompletion(project.id, i + 1)
         })
-        activitytext.textContent = projects[findProject(project.name)].activities[i].name
-        line.setAttribute('id', projects[findProject(project.name)].activities[i].id)
+        activitytext.textContent = projects[findProject(project.id)].activities[i].name
+        line.setAttribute('id', projects[findProject(project.id)].activities[i].id)
         line.classList = 'line'
-        if (projects[findProject(project.name)].activityIndex - 1 > i) {
+        if (projects[findProject(project.id)].activityIndex - 1 > i) {
           line.style.height = '100%'
           dot.style.backgroundColor = 'rgba(255, 255, 255, 1)'
-        } else if (projects[findProject(project.name)].activityIndex - 1 === i) {
+        } else if (projects[findProject(project.id)].activityIndex - 1 === i) {
           dot.style.backgroundColor = 'rgba(255, 255, 255, 1)'
         }
 
-        if (projects[findProject(project.name)].activityIndex === 0) {
+        if (projects[findProject(project.id)].activityIndex === 0) {
           dot.style.backgroundColor = 'rgba(0, 0, 0, 0)'
         }
         dot.appendChild(line)
@@ -193,14 +193,14 @@ function render () {
         content.appendChild(activity)
       }
 
-      input.setAttribute('id', 'input' + project.name)
+      input.setAttribute('id', 'input' + project.id)
 
       button.textContent = 'New activity'
       button.addEventListener('click', function () {
-        addActivity(project.name)
+        addActivity(project.id)
       })
 
-      content.setAttribute('id', 'content' + project.name)
+      content.setAttribute('id', 'content' + project.id)
 
       row.appendChild(h2)
       row.appendChild(remove)
