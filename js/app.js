@@ -15,18 +15,28 @@ function storageRead () {
   render()
 }
 
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1)
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
+}
+
 function findProject (projectName) {
   for (var i = 0; i < projects.length; i++) {
     if (projects[i].name === projectName) {
       return i
     }
   }
+  return false
 }
 
 function newProject () {
   var projectName = prompt('Project name', '')
   var color = 'rgb(' + (76 + Math.round(Math.random() * 50 - 25)) + ', ' + (189 + Math.round(Math.random() * 50 - 25)) + ', ' + (255 - Math.round(Math.random() * 25)) + ')'
-  if (projectName !== '' && projectName !== null) {
+  if (projectName !== '' && projectName !== null && findProject(projectName) === false) {
     var project = {name: projectName, color: color, expanded: false, activities: [], activityIndex: 0}
     projects.push(project)
     storageWrite()
@@ -71,7 +81,7 @@ function expand (project) {
 function addActivity (project) {
   var input = document.getElementById('input' + project)
   var name = input.value
-  var activity = {name: name, completion: false}
+  var activity = {name: name, completion: false, id: guid()}
   projects[findProject(project)].activities.push(activity)
   input.value = ''
   storageWrite()
@@ -84,7 +94,7 @@ function activityCompletion (project, index) {
   projects[findProject(project)].activityIndex = index
 
   for (var i = 0; i < projects[findProject(project)].activities.length; i++) {
-    var clearElement = document.getElementById('line' + projects[findProject(project)].activities[i].name)
+    var clearElement = document.getElementById(projects[findProject(project)].activities[i].id)
     if (index < lastIndex) {
       if (i+1 >= index) {
         delayTime = 0.15*(lastIndex-i-1)
@@ -99,7 +109,7 @@ function activityCompletion (project, index) {
   delayTime = 0
 
   for (i = 0; i < index-1; i++) {
-    var element = document.getElementById('line' + projects[findProject(project)].activities[i].name)
+    var element = document.getElementById(projects[findProject(project)].activities[i].id)
     if (index > lastIndex) {
       if (i >= lastIndex) {
         delayTime = delayTime + 0.15
@@ -111,7 +121,7 @@ function activityCompletion (project, index) {
     element.style.height = '100%'
     element.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 1)'
   }
-  var lastDot = document.getElementById('line' + projects[findProject(project)].activities[i].name)
+  var lastDot = document.getElementById(projects[findProject(project)].activities[i].id)
   lastDot.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 1)'
   if (index === 1 && lastIndex === 1) {
     projects[findProject(project)].activityIndex = 0
@@ -165,7 +175,7 @@ function render () {
           activityCompletion(project.name, i+1)
         })
         activitytext.textContent = projects[findProject(project.name)].activities[i].name
-        line.setAttribute('id', 'line' + projects[findProject(project.name)].activities[i].name)
+        line.setAttribute('id', projects[findProject(project.name)].activities[i].id)
         line.classList = 'line'
         if (projects[findProject(project.name)].activityIndex-1 > i) {
           line.style.height = '100%'
