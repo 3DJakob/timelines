@@ -118,7 +118,8 @@ div.project div.activity {
 div.project div.activity div {
   width: 20px;
   height: 20px;
-  background-color: #fff;
+  background-color: rgba(0, 0, 0, 0);
+  transition: 0.15s;
   border: 1px solid #fff;
   border-radius: 100%;
   margin: 19px 30px;
@@ -130,12 +131,12 @@ div.project div.activity div div {
   border-radius: 0;
   margin: 0;
   padding: 0;
-
   position: absolute;
   left: 37px;
   height: 0;
   background-color: #fff;
-  width: 5px;
+  width: 7px;
+  border: none;
 }
 
 div.project div.activity h3 {

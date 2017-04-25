@@ -79,17 +79,45 @@ function addActivity (project) {
 }
 
 function activityCompletion (project, index) {
+  var lastIndex = projects[findProject(project)].activityIndex
+  var delayTime = 0
   projects[findProject(project)].activityIndex = index
 
-  for (var i = 0; i < projects[findProject(project)].activities.length - 1; i++) {
+  for (var i = 0; i < projects[findProject(project)].activities.length; i++) {
     var clearElement = document.getElementById('line' + projects[findProject(project)].activities[i].name)
+    if (index < lastIndex) {
+      if (i+1 >= index) {
+        delayTime = 0.15*(lastIndex-i-1)
+      }
+      clearElement.style.transitionDelay = delayTime + 's'
+      clearElement.parentNode.style.transitionDelay = delayTime + 's'
+    }
     clearElement.style.height = 0
+    clearElement.parentNode.style.backgroundColor = 'rgba(0,0,0,0)'
   }
 
-  for (i = 0; i < index; i++) {
+  delayTime = 0
+
+  for (i = 0; i < index-1; i++) {
     var element = document.getElementById('line' + projects[findProject(project)].activities[i].name)
+    if (index > lastIndex) {
+      if (i >= lastIndex) {
+        delayTime = delayTime + 0.15
+      }
+      element.style.transitionDelay = delayTime + 's'
+      element.parentNode.style.transitionDelay = delayTime + 's'
+    }
+
     element.style.height = '100%'
+    element.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 1)'
   }
+  var lastDot = document.getElementById('line' + projects[findProject(project)].activities[i].name)
+  lastDot.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 1)'
+  if (index === 1 && lastIndex === 1) {
+    projects[findProject(project)].activityIndex = 0
+    lastDot.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 0)'
+  }
+  lastDot.parentNode.style.transitionDelay = 0 + 's'
   storageWrite()
 }
 
@@ -134,18 +162,22 @@ function render () {
 
         activity.classList = 'activity'
         activity.addEventListener('click', function () {
-          activityCompletion(project.name, i)
+          activityCompletion(project.name, i+1)
         })
         activitytext.textContent = projects[findProject(project.name)].activities[i].name
         line.setAttribute('id', 'line' + projects[findProject(project.name)].activities[i].name)
         line.classList = 'line'
-        if (projects[findProject(project.name)].activityIndex > i) {
+        if (projects[findProject(project.name)].activityIndex-1 > i) {
           line.style.height = '100%'
+          dot.style.backgroundColor = 'rgba(255, 255, 255, 1)'
+        } else if (projects[findProject(project.name)].activityIndex-1 === i) {
+          dot.style.backgroundColor = 'rgba(255, 255, 255, 1)'
         }
 
-        if (i !== projects[findProject(project.name)].activities.length - 1) {
-          dot.appendChild(line)
+        if (projects[findProject(project.name)].activityIndex === 0) {
+          dot.style.backgroundColor = 'rgba(0, 0, 0, 0)'
         }
+        dot.appendChild(line)
         activity.appendChild(dot)
         activity.appendChild(activitytext)
         content.appendChild(activity)
