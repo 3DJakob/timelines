@@ -177,6 +177,7 @@ function moreToggle (id) {
   var header = document.createElement('header')
   var title = document.createElement('h1')
   var notes = document.createElement('textarea')
+  var button = document.createElement('button')
 
   header.textContent = 'Back'
   header.addEventListener ('click', function () {
@@ -192,9 +193,15 @@ function moreToggle (id) {
     updateNotes(id)
   })
 
+  button.textContent = 'Add agreement'
+  button.addEventListener('click', function () {
+    selectAgreement(id)
+  })
+
   target.appendChild(header)
   target.appendChild(title)
   target.appendChild(notes)
+  // target.appendChild(button)
 }
 
 function updateNotes (id) {
@@ -212,6 +219,10 @@ function back () {
   storageWrite()
   document.getElementsByTagName('body')[0].className = 'standard'
   edit = false
+}
+
+function selectAgreement (id) {
+  document.getElementsByTagName('body')[0].className = 'moremode agreement'
 }
 
 function render () {
