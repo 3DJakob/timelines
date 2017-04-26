@@ -14,6 +14,8 @@ body {
   margin: 0;
   width: 100vw;
   background-color: #4cbdff;
+  display: flex;
+  flex-direction: row;
 }
 
 div.page {
@@ -23,14 +25,33 @@ div.page {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  transition: transform 0.2s;
+  transform: translateX(0);
 }
 
-h1, h2, h3, a, p, header {
+.moremode div.page {
+  transform: translateX(-100vw);
+}
+
+div.more {
+  transform: translateX(100vw);
+  position: fixed;
+  overflow: hidden;
+  min-height: 0;
+  height: auto;
+}
+
+.moremode div.more {
+  transform: translateX(0);
+}
+
+h1, h2, h3, a, p, header, textarea {
   font-family: 'Open Sans', sans-serif;
   color: #fff;
 }
 
 h1 {
+  margin-top: 40px;
   font-size: 28px;
 }
 
@@ -39,6 +60,11 @@ header {
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.more header {
+  left: 0;
+  right: auto;
 }
 
 h1, h2, h3, button {
@@ -65,16 +91,23 @@ div.project div.row {
 }
 
 div.project div.row h2 {
+  height: 100%;
   margin: 0;
+  margin-right: 89px;
+  padding-left: 25px;
   display: flex;
   flex: 1;
   align-items: center;
-  justify-content: center;
+  text-align: left;
   transition: 0.2s;
 }
 
-.editmode div.project div.row h2 {
-  transform: translateX(-89px);
+div.project div.row button.more {
+  flex: 1;
+  width: 89px;
+  background-color: rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: center;
 }
 
 /*delete button*/
@@ -185,4 +218,14 @@ div.project div input {
 
 div.project div button {
   margin: 5px;
+}
+
+div.more textarea {
+  margin: auto 0;
+  padding: 10px;
+  width: 90%;
+  max-width: 90%;
+  height: 300px;
+  color: #000;
+  border: none;
 }

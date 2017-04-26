@@ -13,14 +13,15 @@
         <link href="https://fonts.googleapis.com/css?family=Comfortaa|Open+Sans" rel="stylesheet">
     </head>
     <body onload="storageRead()">
-      <header onclick="editToggle()">Edit</header>
       <div class="page">
+        <header onclick="editToggle()">Edit</header>
         <h1>Welcome to Timelines</h1>
         <button type="button" name="new project" onclick="newProject()">New project &#127775;</button>
         <div id="projects">
         </div>
       </div>
-        <script type="text/javascript" src="js/app.js"></script>
-        <!-- <script type="text/javascript" src="cordova.js"></script> -->
+      <div class="page more" id="more"></div>
+      <script type="text/javascript" src="js/app.js"></script>
+      <!-- <script type="text/javascript" src="cordova.js"></script> -->
     </body>
 </html>

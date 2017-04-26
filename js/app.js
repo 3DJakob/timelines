@@ -46,7 +46,7 @@ function newProject () {
   var projectName = prompt('Project name', '')
   var color = 'rgb(' + (76 + Math.round(Math.random() * 50 - 25)) + ', ' + (189 + Math.round(Math.random() * 50 - 25)) + ', ' + (255 - Math.round(Math.random() * 25)) + ')'
   if (projectName !== '' && projectName !== null) {
-    var project = {id: guid(), name: projectName, color: color, expanded: false, activities: [], activityIndex: 0}
+    var project = {id: guid(), name: projectName, color: color, expanded: false, activities: [], activityIndex: 0, notes: ''}
     projects.push(project)
     storageWrite()
     render()
@@ -159,6 +159,47 @@ function activityCompletion (id, index) {
   storageWrite()
 }
 
+function moreToggle (id) {
+  var name = projects[findProject(id)].name
+  document.getElementsByTagName('body')[0].className = 'moremode'
+
+  target = document.getElementById('more')
+  target.innerHTML = ''
+
+  var header = document.createElement('header')
+  var title = document.createElement('h1')
+  var notes = document.createElement('textarea')
+
+  header.textContent = 'Back'
+  header.addEventListener ('click', function () {
+    back()
+  })
+
+  title.textContent = name
+
+  notes.setAttribute('id', 'notes' + id)
+  notes.placeholder = 'Notes'
+  notes.value = projects[findProject(id)].notes
+  notes.addEventListener('input', function (e) {
+    updateNotes(id)
+  })
+
+  target.appendChild(header)
+  target.appendChild(title)
+  target.appendChild(notes)
+}
+
+function updateNotes (id) {
+  var element = document.getElementById('notes' + id)
+  projects[findProject(id)].notes = element.value
+  storageWrite()
+}
+
+function back () {
+  document.getElementsByTagName('body')[0].className = 'standard'
+  edit = false
+}
+
 function render () {
   var target = document.getElementById('projects')
   target.innerHTML = ''
@@ -167,6 +208,7 @@ function render () {
       var div = document.createElement('div')
       var row = document.createElement('div')
       var h2 = document.createElement('h2')
+      var more = document.createElement('button')
       var remove = document.createElement('button')
       var content = document.createElement('div')
       var input = document.createElement('input')
@@ -186,6 +228,12 @@ function render () {
       })
 
       row.classList = 'row'
+
+      more.classList = 'more'
+      more.textContent = '📕'
+      more.addEventListener('click', function () {
+        moreToggle(project.id)
+      })
 
       remove.textContent = 'Delete'
       remove.addEventListener('click', function () {
@@ -240,6 +288,7 @@ function render () {
       content.setAttribute('id', 'content' + project.id)
 
       row.appendChild(h2)
+      row.appendChild(more)
       row.appendChild(remove)
       div.appendChild(row)
       content.appendChild(input)
