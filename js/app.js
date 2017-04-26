@@ -1,6 +1,6 @@
 var projects = []
 var edit = false
-var moreOpen = false
+var moreOpen = 'none'
 
 function storageWrite () {
   var projectsStorage = JSON.stringify(projects)
@@ -11,7 +11,7 @@ function storageWrite () {
 function storageRead () {
   moreOpen = localStorage.getItem('moreOpen')
   if (moreOpen === null) {
-    moreOpen = false
+    moreOpen = 'none'
   }
   projects = JSON.parse(localStorage.getItem('projects'))
   if (projects === null) {
@@ -208,7 +208,7 @@ function back () {
   var projectDiv = document.getElementById('startpage')
   projectDiv.className = 'page'
   moreDiv.className = 'page more'
-  moreOpen = false
+  moreOpen = 'none'
   storageWrite()
   document.getElementsByTagName('body')[0].className = 'standard'
   edit = false
@@ -310,7 +310,7 @@ function render () {
       div.appendChild(content)
       target.appendChild(div)
 
-      if (moreOpen !== 'false') {
+      if (moreOpen !== 'none') {
         var moreDiv = document.getElementById('more')
         var projectDiv = document.getElementById('startpage')
         projectDiv.className = 'page notransition'
