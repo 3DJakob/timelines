@@ -1,12 +1,18 @@
 var projects = []
 var edit = false
+var moreOpen = false
 
 function storageWrite () {
   var projectsStorage = JSON.stringify(projects)
   localStorage.setItem('projects', projectsStorage)
+  localStorage.setItem('moreOpen', moreOpen)
 }
 
 function storageRead () {
+  moreOpen = localStorage.getItem('moreOpen')
+  if (moreOpen === null) {
+    moreOpen = false
+  }
   projects = JSON.parse(localStorage.getItem('projects'))
   if (projects === null) {
     projects = []
@@ -160,6 +166,8 @@ function activityCompletion (id, index) {
 }
 
 function moreToggle (id) {
+  moreOpen = id
+  storageWrite()
   var name = projects[findProject(id)].name
   document.getElementsByTagName('body')[0].className = 'moremode'
 
@@ -196,6 +204,12 @@ function updateNotes (id) {
 }
 
 function back () {
+  var moreDiv = document.getElementById('more')
+  var projectDiv = document.getElementById('startpage')
+  projectDiv.className = 'page'
+  moreDiv.className = 'page more'
+  moreOpen = false
+  storageWrite()
   document.getElementsByTagName('body')[0].className = 'standard'
   edit = false
 }
@@ -295,6 +309,15 @@ function render () {
       content.appendChild(button)
       div.appendChild(content)
       target.appendChild(div)
+
+      if (moreOpen !== 'false') {
+        var moreDiv = document.getElementById('more')
+        var projectDiv = document.getElementById('startpage')
+        projectDiv.className = 'page notransition'
+        moreDiv.className = 'page more notransition'
+        projectDiv.style.width.value
+        moreToggle(moreOpen)
+      }
     })
   } else {
     target.appendChild('')

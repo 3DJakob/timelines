@@ -233,3 +233,7 @@ div.more textarea {
   color: #000;
   border: none;
 }
+
+.notransition {
+  transition: none !important;
+}
