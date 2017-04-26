@@ -36,6 +36,8 @@ div.page {
 div.more {
   transform: translateX(100vw);
   position: fixed;
+  right: 0;
+  top: 0;
   overflow: hidden;
   min-height: 0;
   height: auto;
@@ -102,12 +104,14 @@ div.project div.row h2 {
   transition: 0.2s;
 }
 
+/*more button*/
 div.project div.row button.more {
+  display: flex;
   flex: 1;
   width: 89px;
   background-color: rgba(0, 0, 0, 0.05);
-  display: flex;
-  justify-content: center;
+  padding-left: 36px; /*bad fix!*/
+  /*justify-content: center;*/ /*Not working in safari!*/
 }
 
 /*delete button*/
