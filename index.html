@@ -11,12 +11,13 @@
         <link rel="apple-touch-icon" sizes="76x76" href="icons/AppIcon-76x76@2x.png">
         <link rel="stylesheet" href="css/style.css">
         <link href="https://fonts.googleapis.com/css?family=Comfortaa|Open+Sans" rel="stylesheet">
+        <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
     </head>
     <body onload="storageRead()">
       <div class="page" id="startpage">
         <header onclick="editToggle()">Edit</header>
         <h1>Welcome to Timelines</h1>
-        <button type="button" name="new project" onclick="newProject()">New project &#127775;</button>
+        <button type="button" name="new project" onclick="newProject()">New project <i class="fa fa-star" aria-hidden="true"></i></button>
         <div id="projects">
         </div>
       </div>

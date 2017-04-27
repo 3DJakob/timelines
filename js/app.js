@@ -234,6 +234,7 @@ function render () {
       var row = document.createElement('div')
       var h2 = document.createElement('h2')
       var more = document.createElement('button')
+      var menu = document.createElement('i')
       var remove = document.createElement('button')
       var content = document.createElement('div')
       var input = document.createElement('input')
@@ -255,10 +256,11 @@ function render () {
       row.classList = 'row'
 
       more.classList = 'more'
-      more.textContent = '📕'
       more.addEventListener('click', function () {
         moreToggle(project.id)
       })
+
+      menu.classList = 'fa fa-bars'
 
       remove.textContent = 'Delete'
       remove.addEventListener('click', function () {
@@ -313,6 +315,7 @@ function render () {
       content.setAttribute('id', 'content' + project.id)
 
       row.appendChild(h2)
+      more.appendChild(menu)
       row.appendChild(more)
       row.appendChild(remove)
       div.appendChild(row)
