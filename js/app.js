@@ -186,6 +186,7 @@ function moreToggle (id) {
   var header = document.createElement('header')
   var title = document.createElement('h1')
   var widgets = document.createElement('div')
+  var contactWidgets = document.createElement('div')
   var notes = document.createElement('textarea')
   var button = document.createElement('button')
 
@@ -197,6 +198,7 @@ function moreToggle (id) {
   title.textContent = name
 
   widgets.setAttribute('id', 'widgets')
+  contactWidgets.setAttribute('id', 'contactWidgets')
 
   notes.setAttribute('id', 'notes' + id)
   notes.placeholder = 'Notes'
@@ -212,9 +214,10 @@ function moreToggle (id) {
 
   target.appendChild(header)
   target.appendChild(title)
+  widgets.appendChild(contactWidgets)
+  widgets.appendChild(notes)
+  // widgets.appendChild(button) // Uncomment me to use the incredible widgets!
   target.appendChild(widgets)
-  target.appendChild(notes)
-  // target.appendChild(button)
 
   renderContact()
 }
@@ -293,7 +296,7 @@ function widgetContact () {
   nameInput.setAttribute('id', 'contactName')
   title.textContent = 'Title:'
   titleInput.setAttribute('id', 'contactTitle')
-  job.textContent = 'Job:'
+  job.textContent = 'Workplace:'
   jobInput.setAttribute('id', 'contactJob')
   done.textContent = 'Done'
   done.addEventListener('click', function () {
@@ -322,9 +325,9 @@ function addContact () {
 }
 
 function renderContact () {
-  projects[findProject(moreOpen)].widgets
+  target = document.getElementById('contactWidgets')
+  target.innerHTML = ''
   for (var i = 0; i < projects[findProject(moreOpen)].widgets.length; i++) {
-    target = document.getElementById('widgets')
     var contactSheet = document.createElement('div')
     var contactIcon = document.createElement('i')
     var name = document.createElement('h3')
@@ -332,17 +335,39 @@ function renderContact () {
     var job = document.createElement('h3')
 
     contactSheet.className = 'contactSheet'
-    contactIcon.className = 'fa fa-user-circle fa-3x'
-    name.textContent = projects[findProject(moreOpen)].widgets[i].name
-    title.textContent = projects[findProject(moreOpen)].widgets[i].title
-    job.textContent = projects[findProject(moreOpen)].widgets[i].job
+    contactIcon.className = 'fa fa-user fa-3x contactIcon'
+    var nameText = projects[findProject(moreOpen)].widgets[i].name
+    var titleText = projects[findProject(moreOpen)].widgets[i].title
+    var jobText = projects[findProject(moreOpen)].widgets[i].job
 
     contactSheet.appendChild(contactIcon)
-    contactSheet.appendChild(name)
-    contactSheet.appendChild(title)
-    contactSheet.appendChild(job)
+    if (validateString(nameText)) {
+      name.textContent = 'Name: ' + nameText
+      contactSheet.appendChild(name)
+    }
+    if (validateString(titleText)) {
+      title.textContent = 'Title: ' + titleText
+      contactSheet.appendChild(title)
+    }
+    if (validateString(jobText)) {
+      job.textContent = 'Workplace: ' + jobText
+      contactSheet.appendChild(job)
+    }
+
+
     target.appendChild(contactSheet)
-    selectWidget()
+
+    if (popup !== 'closed') {
+      selectWidget()
+    }
+  }
+}
+
+function validateString (string) {
+  if (string !== '' && string !== null) {
+    return true
+  } else {
+    return false
   }
 }
 

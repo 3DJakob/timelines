@@ -39,8 +39,8 @@ div.more {
   right: 0;
   top: 0;
   overflow-y:scroll;
-  min-height: 0;
-  height: auto;
+  height: 100vh;
+  flex-wrap: nowrap;
 }
 
 .moremode div.more {
@@ -55,6 +55,14 @@ h1, h2, h3, a, p, header, textarea {
 h1 {
   margin-top: 40px;
   font-size: 28px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 16px;
 }
 
 header {
@@ -180,7 +188,7 @@ div.project div.activity div {
   transition: 0.15s;
   border: 1px solid #fff;
   border-radius: 100%;
-  margin: 19px 30px;
+  margin: 13px 20px;
   flex-shrink: 0;
 }
 
@@ -190,7 +198,7 @@ div.project div.activity div div {
   margin: 0;
   padding: 0;
   position: absolute;
-  left: 37px;
+  left: 27px;
   height: 0;
   background-color: #fff;
   width: 7px;
@@ -224,21 +232,26 @@ div.project div button {
   margin: 5px;
 }
 
+div#widgets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 /*notes*/
 div.more textarea {
-  margin: 10px;
+  margin: 10px 0;
   padding: 10px;
   width: 90vw;
-  max-width: 90vw;
   height: 300px;
   color: #000;
   border: none;
 }
 
-/*agreement button*/
+/*widget button*/
 div.more button {
-  margin: 10px;
-  width: 94vw;
+  margin: 10px 0;
+  width: 90vw;
   padding: 10px;
 }
 
@@ -338,19 +351,34 @@ div.agreementPopup button {
 }
 
 div.contactSheet {
-  width: 90vw;
+  width: 100vw;
   border: 1px solid #fff;
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   margin-top: 20px;
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-div.contactSheet i {
+div.contactSheet .contactIcon {
+  width: 50px;
+  height: 50px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
   color: #fff;
   margin: auto;
-  margin-top: -25px;
+  margin-top: -30px;
   background-color: #4cbdff;
+  border: 1px solid #fff;
   border-radius: 100%;
+}
+
+div.contactSheet h3 {
+  margin: 10px;
+}
+
+div.contactSheet h3:last-of-type {
+  margin-bottom: 20px;
 }
