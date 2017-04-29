@@ -1,0 +1,156 @@
+div#widgets {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*notes*/
+div.more textarea {
+  margin: 10px 0;
+  padding: 10px;
+  width: 90vw;
+  height: 300px;
+  color: #000;
+  border: none;
+}
+
+/*widget button*/
+div.more button {
+  margin: 10px 0;
+  width: 90vw;
+  padding: 10px;
+}
+
+#transitionDiv.notransition div#more {
+  transition: none !important;
+}
+
+.popupCenter {
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  min-height: 100vh;
+  position: fixed;
+  right: 0;
+  top: 0;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+  transform: translateX(100vw);
+
+  opacity: 0;
+  transition: 0.5s;
+}
+
+#transitionDiv.notransition .popupCenter {
+  transition: none;
+}
+
+.agreement .popupCenter {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.agreement .popupSetting {
+  opacity: 1;
+  transform: translateX(100vw);
+}
+
+.settings .popupCenter {
+  opacity: 0;
+  transition: all 0.5s 0s, opacity 0.5s 0.5s;
+  transform: translateX(-100vw);
+}
+
+.settings .popupSetting {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+div.agreementPopup {
+  display: flex;
+  flex-direction: column;
+  top: 30vh;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 3px;
+  margin: 30px;
+  transition: 1s;
+  min-width: 80%;
+}
+
+/*row*/
+div.agreementPopup div {
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+/*aggrement icon box*/
+div.agreementPopup div div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #fff;
+  margin: 0;
+  background-color: #4cbdff;
+}
+
+/*aggrement icon*/
+div.agreementPopup div div i {
+  color: #fff;
+}
+
+/*aggrement text*/
+div.agreementPopup div div p {
+  margin: 5px 0;
+  text-align: center;
+  color: #fff;
+}
+
+div.agreementPopup h3 {
+  margin-bottom: 4px;
+}
+
+div.agreementPopup input {
+  margin: 5px;
+}
+
+div.agreementPopup button {
+  margin: 5px;
+}
+
+div.contactSheet {
+  width: 100vw;
+  border: 1px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: relative;
+}
+
+div.contactSheet .contactIcon {
+  width: 50px;
+  height: 50px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  margin: auto;
+  margin-top: -30px;
+  background-color: #4cbdff;
+  border: 1px solid #fff;
+  border-radius: 100%;
+}
+
+div.contactSheet h3 {
+  margin: 10px;
+}
+
+div.contactSheet h3:last-of-type {
+  margin-bottom: 20px;
+}

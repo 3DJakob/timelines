@@ -1,0 +1,105 @@
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+html {
+  user-select: none;
+}
+
+body {
+  -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+  -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+  -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+  overflow: auto;
+  margin: 0;
+  width: 100vw;
+  background-color: #4cbdff;
+  display: flex;
+  flex-direction: row;
+}
+
+div.page {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: transform 0.2s;
+  transform: translateX(0);
+}
+
+.moremode div.page {
+  transform: translateX(-100vw);
+}
+
+div.more {
+  transform: translateX(100vw);
+  position: fixed;
+  right: 0;
+  top: 0;
+  overflow-y:scroll;
+  height: 100vh;
+  flex-wrap: nowrap;
+}
+
+.moremode div.more {
+  transform: translateX(0);
+}
+
+h1, h2, h3, a, p, header, textarea {
+  font-family: 'Open Sans', sans-serif;
+  color: #fff;
+}
+
+h1 {
+  margin-top: 40px;
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 16px;
+}
+
+header {
+  padding: 10px 14px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.more header {
+  left: 0;
+  right: auto;
+}
+
+.more header.right {
+  right: 0;
+  left: auto;
+}
+
+h1, h2, h3, button {
+  font-family: 'Comfortaa', cursive;
+  text-align: center;
+}
+
+button {
+  text-decoration: none;
+  border: none;
+  background-color: #ff723a;
+  color: #fff;
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+input {
+  margin: 5px;
+  padding: 13.5px;
+  border: none;
+  border-radius: 3px;
+}

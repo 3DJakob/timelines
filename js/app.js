@@ -1,5 +1,6 @@
 var projects = []
 var edit = false
+var editWidgets = false
 var moreOpen = 'none'
 var popup = 'closed'
 
@@ -57,7 +58,21 @@ function findActivity (projectId, activityId) {
   return false
 }
 
+function findWidget (widgetId) {
+  for (var i = 0; i < projects[findProject(moreOpen)].widgets.length; i++) {
+    if (projects[findProject(moreOpen)].widgets[i].id === widgetId) {
+      return i
+    }
+  }
+  return false
+}
+
+function enableTransitions () {
+  document.getElementById('transitionDiv').className = ''
+}
+
 function newProject () {
+  enableTransitions()
   var projectName = prompt('Project name', '')
   var color = 'rgb(' + (76 + Math.round(Math.random() * 50 - 25)) + ', ' + (189 + Math.round(Math.random() * 50 - 25)) + ', ' + (255 - Math.round(Math.random() * 25)) + ')'
   if (projectName !== '' && projectName !== null) {
@@ -69,11 +84,22 @@ function newProject () {
 }
 
 function editToggle () {
+  enableTransitions()
   edit = !edit
   if (edit === true) {
     document.getElementsByTagName('body')[0].className = 'editmode'
   } else {
     document.getElementsByTagName('body')[0].className = 'standard'
+  }
+}
+
+function widgetsEdit () {
+  enableTransitions()
+  editWidgets = !editWidgets
+  if (editWidgets === true) {
+    document.getElementsByTagName('body')[0].className = 'moremode editmode'
+  } else {
+    document.getElementsByTagName('body')[0].className = 'moremode'
   }
 }
 
@@ -103,6 +129,7 @@ function expand (id) {
 }
 
 function addActivity (id) {
+  enableTransitions()
   var input = document.getElementById('input' + id)
   var name = input.value
   if (name !== '') {
@@ -174,26 +201,37 @@ function activityCompletion (id, index) {
   storageWrite()
 }
 
+function moreClick (id) {
+  enableTransitions()
+  moreToggle(id)
+}
+
 function moreToggle (id) {
   moreOpen = id
   storageWrite()
   var name = projects[findProject(id)].name
   document.getElementsByTagName('body')[0].className = 'moremode'
 
-  target = document.getElementById('more')
+  var target = document.getElementById('more')
   target.innerHTML = ''
 
-  var header = document.createElement('header')
+  var backHeader = document.createElement('header')
+  var edit = document.createElement('header')
   var title = document.createElement('h1')
   var widgets = document.createElement('div')
   var contactWidgets = document.createElement('div')
   var notes = document.createElement('textarea')
   var button = document.createElement('button')
 
-  header.textContent = 'Back'
-  header.addEventListener ('click', function () {
+  backHeader.textContent = 'Back'
+  backHeader.addEventListener('click', function () {
     back()
   })
+  edit.textContent = 'Edit'
+  edit.addEventListener('click', function () {
+    widgetsEdit()
+  })
+  edit.className = 'right'
 
   title.textContent = name
 
@@ -212,14 +250,15 @@ function moreToggle (id) {
     selectWidget(id)
   })
 
-  target.appendChild(header)
+  target.appendChild(backHeader)
+  target.appendChild(edit)
   target.appendChild(title)
   widgets.appendChild(contactWidgets)
   widgets.appendChild(notes)
-  // widgets.appendChild(button) // Uncomment me to use the incredible widgets!
+  widgets.appendChild(button)
   target.appendChild(widgets)
 
-  renderContact()
+  renderWidgets()
 }
 
 function updateNotes (id) {
@@ -229,10 +268,9 @@ function updateNotes (id) {
 }
 
 function back () {
+  enableTransitions()
   var moreDiv = document.getElementById('more')
   var projectDiv = document.getElementById('startpage')
-  projectDiv.className = 'page'
-  moreDiv.className = 'page more'
   moreOpen = 'none'
   storageWrite()
   document.getElementsByTagName('body')[0].className = 'standard'
@@ -240,6 +278,7 @@ function back () {
 }
 
 function selectWidget () {
+  enableTransitions()
   if (popup === 'closed') {
     popup = 'selecting'
   } else {
@@ -247,7 +286,6 @@ function selectWidget () {
   }
 
   storageWrite()
-  widgetAnimations()
   if (popup !== 'closed') {
     document.getElementsByTagName('body')[0].className = 'moremode agreement'
   } else {
@@ -256,23 +294,32 @@ function selectWidget () {
 }
 
 function cancelClick () {
-
-  if (!e) var e = window.event;
-  e.cancelBubble = true;
-  if (e.stopPropagation) e.stopPropagation();
+  if (!e) var e = window.event
+  e.cancelBubble = true
+  if (e.stopPropagation) e.stopPropagation()
 }
 
-function widgetAnimations () {
-  var popupCenter = document.getElementsByClassName('popupCenter')[0]
-  popupCenter.className = 'popupCenter'
+function renderWidgets () {
+  renderContacts()
 }
 
-function widgetContact () {
+function deleteWidget (id) {
+  projects[findProject(moreOpen)].widgets.splice(findWidget(id), 1)
+  storageWrite()
+  widgetsEdit()
+  renderWidgets()
+}
+
+function widgetContactClick () {
+  enableTransitions()
+  widgetContactNav()
+}
+
+function widgetContactNav () {
   popup = 'contact'
   storageWrite()
   var body = document.getElementsByTagName('body')[0]
   body.className = 'moremode settings'
-  widgetAnimations()
 
   var settingsBox = document.getElementsByClassName('popupSetting')[0]
   settingsBox.innerHTML = ''
@@ -300,7 +347,7 @@ function widgetContact () {
   jobInput.setAttribute('id', 'contactJob')
   done.textContent = 'Done'
   done.addEventListener('click', function () {
-    addContact()
+    widgetContactSheet()
   })
 
   settingsBox.appendChild(h2)
@@ -314,51 +361,63 @@ function widgetContact () {
   settingsBox.appendChild(settingsPopup)
 }
 
-function addContact () {
+function widgetContactSheet () {
   var nameText = document.getElementById('contactName').value
   var titleText = document.getElementById('contactTitle').value
   var jobText = document.getElementById('contactJob').value
-  var contact = {name: nameText, title: titleText, job: jobText}
-  projects[findProject(moreOpen)].widgets.push(contact)
-  storageWrite()
-  renderContact()
-}
 
-function renderContact () {
-  target = document.getElementById('contactWidgets')
-  target.innerHTML = ''
-  for (var i = 0; i < projects[findProject(moreOpen)].widgets.length; i++) {
-    var contactSheet = document.createElement('div')
-    var contactIcon = document.createElement('i')
-    var name = document.createElement('h3')
-    var title = document.createElement('h3')
-    var job = document.createElement('h3')
-
-    contactSheet.className = 'contactSheet'
-    contactIcon.className = 'fa fa-user fa-3x contactIcon'
-    var nameText = projects[findProject(moreOpen)].widgets[i].name
-    var titleText = projects[findProject(moreOpen)].widgets[i].title
-    var jobText = projects[findProject(moreOpen)].widgets[i].job
-
-    contactSheet.appendChild(contactIcon)
-    if (validateString(nameText)) {
-      name.textContent = 'Name: ' + nameText
-      contactSheet.appendChild(name)
-    }
-    if (validateString(titleText)) {
-      title.textContent = 'Title: ' + titleText
-      contactSheet.appendChild(title)
-    }
-    if (validateString(jobText)) {
-      job.textContent = 'Workplace: ' + jobText
-      contactSheet.appendChild(job)
-    }
-
-
-    target.appendChild(contactSheet)
-
+  if (validateString(nameText) || validateString(titleText) || validateString(jobText)) {
+    var contact = {type: 'contact', name: nameText, title: titleText, job: jobText, id: guid()}
+    projects[findProject(moreOpen)].widgets.push(contact)
+    storageWrite()
+    renderWidgets()
     if (popup !== 'closed') {
       selectWidget()
+    }
+  }
+}
+
+function renderContacts () {
+  var target = document.getElementById('contactWidgets')
+  target.innerHTML = ''
+  for (let i = 0; i < projects[findProject(moreOpen)].widgets.length; i++) {
+    if (projects[findProject(moreOpen)].widgets[i].type === 'contact') {
+      var contactSheet = document.createElement('div')
+      var remove = document.createElement('button')
+      var contactIcon = document.createElement('i')
+      var name = document.createElement('h3')
+      var title = document.createElement('h3')
+      var job = document.createElement('h3')
+
+      contactSheet.className = 'contactSheet'
+      contactIcon.className = 'fa fa-user fa-3x contactIcon'
+
+      remove.textContent = 'Delete'
+      remove.className = 'deleteButton'
+      remove.addEventListener('click', function () {
+        deleteWidget(projects[findProject(moreOpen)].widgets[i].id)
+      })
+      contactSheet.appendChild(remove)
+
+      var nameText = projects[findProject(moreOpen)].widgets[i].name
+      var titleText = projects[findProject(moreOpen)].widgets[i].title
+      var jobText = projects[findProject(moreOpen)].widgets[i].job
+
+      contactSheet.appendChild(contactIcon)
+      if (validateString(nameText)) {
+        name.textContent = 'Name: ' + nameText
+        contactSheet.appendChild(name)
+      }
+      if (validateString(titleText)) {
+        title.textContent = 'Title: ' + titleText
+        contactSheet.appendChild(title)
+      }
+      if (validateString(jobText)) {
+        job.textContent = 'Workplace: ' + jobText
+        contactSheet.appendChild(job)
+      }
+      target.appendChild(contactSheet)
+
     }
   }
 }
@@ -403,12 +462,13 @@ function render () {
 
       more.classList = 'more'
       more.addEventListener('click', function () {
-        moreToggle(project.id)
+        moreClick(project.id)
       })
 
       menu.classList = 'fa fa-bars'
 
       remove.textContent = 'Delete'
+      remove.className = 'deleteButton'
       remove.addEventListener('click', function () {
         deleteProject(project.id)
       })
@@ -469,21 +529,20 @@ function render () {
       content.appendChild(button)
       div.appendChild(content)
       target.appendChild(div)
-
-      if (moreOpen !== 'none') {
-        var moreDiv = document.getElementById('more')
-        var projectDiv = document.getElementById('startpage')
-        projectDiv.className = 'page notransition'
-        moreDiv.className = 'page more notransition'
-        moreToggle(moreOpen)
-      }
-
-      if (popup !== 'closed') {
-        var popupCenter = document.getElementsByClassName('popupCenter')[0]
-        popupCenter.className = 'popupCenter notransition'
-        document.getElementsByTagName('body')[0].className = 'moremode agreement'
-      }
     })
+    if (moreOpen !== 'none') {
+      var moreDiv = document.getElementById('more')
+      var projectDiv = document.getElementById('startpage')
+      moreToggle(moreOpen)
+    }
+
+    if (popup !== 'closed') {
+      document.getElementsByTagName('body')[0].className = 'moremode agreement'
+
+      if (popup === 'contact') {
+        widgetContactNav()
+      }
+    }
   } else {
     target.appendChild('')
   }

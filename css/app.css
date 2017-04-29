@@ -1,0 +1,137 @@
+#transitionDiv.notransition #startpage {
+  transition: none !important;
+}
+
+div.project div.row {
+  height: 89px;
+  position: relative;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+div.project div.row h2 {
+  height: 100%;
+  margin: 0;
+  margin-right: 89px;
+  padding-left: 25px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  text-align: left;
+  transition: 0.2s;
+}
+
+/*more button*/
+div.project div.row button.more {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  right: 0;
+  width: 89px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/*delete button*/
+button.deleteButton {
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0;
+  background-color: red;
+  transition: width 0.3s;
+  position: absolute;
+  height: 100%;
+  right: 0;
+
+  width: 0 !important;
+}
+
+.editmode button.deleteButton {
+  width: 89px !important;
+}
+
+div#projects {
+  width: 100vw;
+  margin-top: 40px;
+}
+
+div.project {
+  width: 100vw;
+  height: 89px;
+  overflow: hidden;
+  transition: height 0.3s;
+}
+
+div.project div {
+  display: flex;
+  flex-direction: column;
+  transition: height 0.3s;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 100vw;
+}
+
+div.project div.activity {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  padding: 30px 0;
+  background-color: rgba(0, 0, 0, 0);
+  transition: transform 0.2s;
+}
+
+.editmode div.project div.activity {
+  transform: translateX(-72px);
+}
+
+/*The bullet*/
+div.project div.activity div {
+  width: 20px;
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0);
+  transition: 0.15s;
+  border: 1px solid #fff;
+  border-radius: 100%;
+  margin: 13px 30px;
+  flex-shrink: 0;
+}
+
+/*The completion line*/
+div.project div.activity div div {
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 27px;
+  height: 0;
+  background-color: #fff;
+  width: 7px;
+  border: none;
+}
+
+/*The delete button*/
+div.project div.activity button {
+  align-self: center;
+  position: absolute;
+  right: 0;
+  top: 35px;
+  width: 0;
+  padding: 10px 0;
+  transition: 0.2s;
+
+  transform: translateX(72px);
+}
+
+.editmode div.project div.activity button {
+  width: 79px;
+  padding: 10px;
+}
+
+div.project div.activity h3 {
+  margin-right: 30px;
+  text-align: left;
+}
+
+div.project div button {
+  margin: 5px;
+}
