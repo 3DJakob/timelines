@@ -36,6 +36,7 @@ div.page {
 div.more {
   transform: translateX(100vw);
   position: fixed;
+  display: block;
   right: 0;
   top: 0;
   overflow-y:scroll;
