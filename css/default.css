@@ -39,7 +39,8 @@ div.more {
   display: block;
   right: 0;
   top: 0;
-  overflow-y:scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   height: 100vh;
   flex-wrap: nowrap;
 }
