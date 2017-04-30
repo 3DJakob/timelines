@@ -220,6 +220,7 @@ function moreToggle (id) {
   var title = document.createElement('h1')
   var widgets = document.createElement('div')
   var contactWidgets = document.createElement('div')
+  var agreementWidgets = document.createElement('div')
   var notes = document.createElement('textarea')
   var button = document.createElement('button')
 
@@ -237,6 +238,7 @@ function moreToggle (id) {
 
   widgets.setAttribute('id', 'widgets')
   contactWidgets.setAttribute('id', 'contactWidgets')
+  agreementWidgets.setAttribute('id', 'agreementWidgets')
 
   notes.setAttribute('id', 'notes' + id)
   notes.placeholder = 'Notes'
@@ -254,6 +256,7 @@ function moreToggle (id) {
   target.appendChild(edit)
   target.appendChild(title)
   widgets.appendChild(contactWidgets)
+  widgets.appendChild(agreementWidgets)
   widgets.appendChild(notes)
   widgets.appendChild(button)
   target.appendChild(widgets)
@@ -301,6 +304,7 @@ function cancelClick () {
 
 function renderWidgets () {
   renderContacts()
+  renderAgreements()
 }
 
 function deleteWidget (id) {
@@ -418,6 +422,92 @@ function renderContacts () {
       }
       target.appendChild(contactSheet)
 
+    }
+  }
+}
+
+function widgetAgreementClick () {
+  enableTransitions()
+  widgetAgreementNav()
+}
+
+function widgetAgreementNav () {
+  popup = 'agreement'
+  storageWrite()
+  var body = document.getElementsByTagName('body')[0]
+  body.className = 'moremode settings'
+
+  var settingsBox = document.getElementsByClassName('popupSetting')[0]
+  settingsBox.innerHTML = ''
+
+  var h2 = document.createElement('h2')
+  var settingsPopup = document.createElement('div')
+  var agreement = document.createElement('h3')
+  var agreementInput = document.createElement('input')
+  var done = document.createElement('button')
+
+  h2.textContent = 'Create agreement'
+  settingsPopup.className = 'agreementPopup'
+  settingsPopup.addEventListener('click', function () {
+    cancelClick()
+  })
+  agreement.textContent = 'Agreement:'
+  agreementInput.setAttribute('id', 'agreementText')
+  done.textContent = 'Done'
+  done.addEventListener('click', function () {
+    widgetAgreementSheet()
+  })
+
+  settingsBox.appendChild(h2)
+  settingsPopup.appendChild(agreement)
+  settingsPopup.appendChild(agreementInput)
+  settingsPopup.appendChild(done)
+  settingsBox.appendChild(settingsPopup)
+}
+
+function widgetAgreementSheet () {
+  var agreementText = document.getElementById('agreementText').value
+
+  if (validateString(agreementText)) {
+    var agreement = {type: 'agreement', agreement: agreementText, id: guid()}
+    projects[findProject(moreOpen)].widgets.push(agreement)
+    storageWrite()
+    renderWidgets()
+    if (popup !== 'closed') {
+      selectWidget()
+    }
+  }
+}
+
+function renderAgreements () {
+  var target = document.getElementById('agreementWidgets')
+  target.innerHTML = ''
+
+  for (let i = 0; i < projects[findProject(moreOpen)].widgets.length; i++) {
+    if (projects[findProject(moreOpen)].widgets[i].type === 'agreement') {
+      var agreementSheet = document.createElement('div')
+      var agreementIcon = document.createElement('i')
+      var agreement = document.createElement('h3')
+      var remove = document.createElement('button')
+
+      agreementSheet.className = 'agreementSheet'
+      agreementIcon.className = 'fa fa-handshake-o fa-2x'
+
+      remove.textContent = 'Delete'
+      remove.className = 'deleteButton'
+      remove.addEventListener('click', function () {
+        deleteWidget(projects[findProject(moreOpen)].widgets[i].id)
+      })
+      agreementSheet.appendChild(remove)
+
+      var agreementText = projects[findProject(moreOpen)].widgets[i].agreement
+
+      agreementSheet.appendChild(agreementIcon)
+      if (validateString(agreementText)) {
+        agreement.textContent = agreementText
+        agreementSheet.appendChild(agreement)
+      }
+      target.appendChild(agreementSheet)
     }
   }
 }
@@ -541,6 +631,9 @@ function render () {
 
       if (popup === 'contact') {
         widgetContactNav()
+      }
+      if (popup === 'agreement') {
+        widgetAgreementNav()
       }
     }
   } else {

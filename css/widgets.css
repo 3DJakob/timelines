@@ -154,3 +154,41 @@ div.contactSheet h3 {
 div.contactSheet h3:last-of-type {
   margin-bottom: 20px;
 }
+
+div#agreementWidgets {
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100vw;
+  margin: 20px 0;
+  border: 1px solid #fff;
+}
+
+div.agreementSheet {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+div.agreementSheet i {
+  color: #fff;
+  margin: 10px 0 10px 22px;
+  transition: 0.2s;
+}
+
+div.agreementSheet h3 {
+  margin: 30px;
+  text-align: left;
+  width: 100%;
+  transition: 0.2s;
+}
+
+div.agreementSheet button {
+  height: 100%;
+}
+
+.editmode div.agreementSheet h3, .editmode div.agreementSheet i {
+  transform: translateX(-79px);
+}
