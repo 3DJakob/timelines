@@ -67,7 +67,7 @@ div.more button {
   transform: translateX(0);
 }
 
-div.agreementPopup {
+.popupSetting div {
   display: flex;
   flex-direction: column;
   top: 30vh;
@@ -75,7 +75,7 @@ div.agreementPopup {
   border-radius: 3px;
   margin: 30px;
   transition: 1s;
-  min-width: 80%;
+  width: 80%;
 }
 
 /*row*/
@@ -125,12 +125,21 @@ div.contactSheet {
   width: 100vw;
   border: 1px solid #fff;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-left: 60px;
   flex-direction: column;
-  margin-top: 20px;
+  margin: 10px;
   background-color: rgba(255, 255, 255, 0.5);
   position: relative;
+  transition: 0.3s;
+}
+
+.editmode div.contactSheet * {
+  transform: translateX(-79px);
+}
+
+.editmode button.deleteButton {
+  transform: translateX(0);
 }
 
 div.contactSheet .contactIcon {
@@ -140,26 +149,30 @@ div.contactSheet .contactIcon {
   display: flex;
   justify-content: center;
   color: #fff;
-  margin: auto;
   margin-top: -30px;
   background-color: #4cbdff;
   border: 1px solid #fff;
   border-radius: 100%;
+  transition: 0.3s;
 }
 
 div.contactSheet h3 {
   margin: 10px;
+  transition: 0.3s;
 }
 
 div.contactSheet h3:last-of-type {
   margin-bottom: 20px;
 }
 
+div.contactSheet .deleteButton {
+  right: 30px;
+}
+
 div#agreementWidgets {
   background-color: rgba(0, 0, 0, 0.2);
   width: 100vw;
-  margin: 20px 0;
-  border: 1px solid #fff;
+  margin: 10px 0;
 }
 
 div.agreementSheet {
@@ -175,14 +188,14 @@ div.agreementSheet {
 div.agreementSheet i {
   color: #fff;
   margin: 10px 0 10px 22px;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
 div.agreementSheet h3 {
   margin: 30px;
   text-align: left;
   width: 100%;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
 div.agreementSheet button {
@@ -191,4 +204,65 @@ div.agreementSheet button {
 
 .editmode div.agreementSheet h3, .editmode div.agreementSheet i {
   transform: translateX(-79px);
+}
+
+.paymentPopup div {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.paymentPopup input:first-child {
+  flex: 2;
+  text-align: right;
+  margin-right: 0;
+}
+
+.paymentPopup input {
+  margin: 5px;
+  display: flex;
+  padding: 5px;
+  width: 40%;
+  font-size: 30px;
+  flex: 1;
+  text-transform: uppercase
+}
+
+.paymentPopup select {
+  margin: 5px;
+  padding: 12px;
+  font-size: 18px;
+}
+
+.paymentPopup button {
+  margin: 5px;
+}
+
+div.paymentSheet {
+  display: flex;
+  position: relative;
+  width: 100vw;
+  align-items: baseline;
+  justify-content: center;
+  margin: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: 0.3s;
+}
+
+div.paymentSheet h1, div.paymentSheet h3 {
+  margin: 0;
+  margin-left: 4px;
+  transition: 0.3s;
+}
+
+.editmode div.paymentSheet h1, .editmode div.paymentSheet h3 {
+  transform: translateX(-79px);
+}
+
+
+div.paymentSheet h1 {
+  margin: 10px 10px 2px 0;
+  font-size: 50px;
 }

@@ -220,6 +220,7 @@ function moreToggle (id) {
   var title = document.createElement('h1')
   var widgets = document.createElement('div')
   var contactWidgets = document.createElement('div')
+  var paymentWidgets = document.createElement('div')
   var agreementWidgets = document.createElement('div')
   var notes = document.createElement('textarea')
   var button = document.createElement('button')
@@ -239,6 +240,7 @@ function moreToggle (id) {
   widgets.setAttribute('id', 'widgets')
   contactWidgets.setAttribute('id', 'contactWidgets')
   agreementWidgets.setAttribute('id', 'agreementWidgets')
+  paymentWidgets.setAttribute('id', 'paymentWidgets')
 
   notes.setAttribute('id', 'notes' + id)
   notes.placeholder = 'Notes'
@@ -256,6 +258,7 @@ function moreToggle (id) {
   target.appendChild(edit)
   target.appendChild(title)
   widgets.appendChild(contactWidgets)
+  widgets.appendChild(paymentWidgets)
   widgets.appendChild(agreementWidgets)
   widgets.appendChild(notes)
   widgets.appendChild(button)
@@ -304,14 +307,26 @@ function cancelClick () {
 
 function renderWidgets () {
   renderContacts()
+  renderPayments()
   renderAgreements()
 }
 
 function deleteWidget (id) {
-  projects[findProject(moreOpen)].widgets.splice(findWidget(id), 1)
+  var elements = projects[findProject(moreOpen)].widgets
+  var type = elements[findWidget(id)].type
+  elements.splice(findWidget(id), 1)
+
+
+  if (type === 'contact') {
+    renderContacts()
+  } else if (type === 'payment') {
+    renderPayments()
+  } else if (type === 'agreement') {
+    renderAgreements()
+  }
+
   storageWrite()
   widgetsEdit()
-  renderWidgets()
 }
 
 function widgetContactClick () {
@@ -374,7 +389,7 @@ function widgetContactSheet () {
     var contact = {type: 'contact', name: nameText, title: titleText, job: jobText, id: guid()}
     projects[findProject(moreOpen)].widgets.push(contact)
     storageWrite()
-    renderWidgets()
+    renderContacts()
     if (popup !== 'closed') {
       selectWidget()
     }
@@ -409,15 +424,15 @@ function renderContacts () {
 
       contactSheet.appendChild(contactIcon)
       if (validateString(nameText)) {
-        name.textContent = 'Name: ' + nameText
+        name.textContent = '🕴 ' + nameText
         contactSheet.appendChild(name)
       }
       if (validateString(titleText)) {
-        title.textContent = 'Title: ' + titleText
+        title.textContent = '💼 ' + titleText
         contactSheet.appendChild(title)
       }
       if (validateString(jobText)) {
-        job.textContent = 'Workplace: ' + jobText
+        job.textContent = '🏢 ' + jobText
         contactSheet.appendChild(job)
       }
       target.appendChild(contactSheet)
@@ -472,7 +487,7 @@ function widgetAgreementSheet () {
     var agreement = {type: 'agreement', agreement: agreementText, id: guid()}
     projects[findProject(moreOpen)].widgets.push(agreement)
     storageWrite()
-    renderWidgets()
+    renderAgreements()
     if (popup !== 'closed') {
       selectWidget()
     }
@@ -508,6 +523,161 @@ function renderAgreements () {
         agreementSheet.appendChild(agreement)
       }
       target.appendChild(agreementSheet)
+    }
+  }
+}
+
+function widgetPaymentClick () {
+  enableTransitions()
+  widgetPaymentNav()
+}
+
+function widgetPaymentNav () {
+  popup = 'payment'
+  storageWrite()
+  var body = document.getElementsByTagName('body')[0]
+  body.className = 'moremode settings'
+
+  var settingsBox = document.getElementsByClassName('popupSetting')[0]
+  settingsBox.innerHTML = ''
+
+  var h2 = document.createElement('h2')
+  var settingsPopup = document.createElement('div')
+  var row = document.createElement('div')
+  var money = document.createElement('input')
+  var currency = document.createElement('input')
+  var paymentForm = document.createElement('select')
+  var hourly = document.createElement('option')
+  var salary = document.createElement('option')
+  var done = document.createElement('button')
+
+  h2.textContent = 'Specify payment'
+  settingsPopup.className = 'paymentPopup'
+  settingsPopup.addEventListener('click', function () {
+    cancelClick()
+  })
+  money.placeholder = '999'
+  money.setAttribute('id', 'moneyInput')
+  money.pattern = '[0-9.]*'
+  currency.placeholder = 'USD'
+  currency.setAttribute('id', 'currencyInput')
+  paymentForm.setAttribute('id', 'paymentForm')
+  hourly.textContent = 'hourly'
+  salary.textContent = 'salary'
+  done.textContent = 'Done'
+  done.addEventListener('click', function () {
+    widgetPaymentSheet()
+  })
+
+  settingsBox.appendChild(h2)
+  row.appendChild(money)
+  row.appendChild(currency)
+  settingsPopup.appendChild(row)
+  paymentForm.appendChild(hourly)
+  paymentForm.appendChild(salary)
+  settingsPopup.appendChild(paymentForm)
+  settingsPopup.appendChild(done)
+  settingsBox.appendChild(settingsPopup)
+}
+
+function widgetPaymentSheet () {
+  var money = document.getElementById('moneyInput').value
+  var currency = document.getElementById('currencyInput').value.toUpperCase()
+  var select = document.getElementById('paymentForm')
+  var paymentChoice = select.options[select.selectedIndex].text
+
+  if (!isNaN(money) && isNaN(currency)) {
+    var payment = {type: 'payment', money: money, currency: currency, payment: paymentChoice, id: guid()}
+    projects[findProject(moreOpen)].widgets.push(payment)
+    storageWrite()
+    renderPayments()
+    if (popup !== 'closed') {
+      selectWidget()
+   }
+  } else {
+    if (isNaN(money)) {
+      document.getElementById('moneyInput').style.backgroundColor = 'rgba(250, 120, 120, 0.3)'
+    } else {
+      document.getElementById('moneyInput').style.backgroundColor = '#fff'
+    }
+    if (!isNaN(currency)) {
+      document.getElementById('currencyInput').style.backgroundColor = 'rgba(250, 120, 120, 0.3)'
+    } else {
+      document.getElementById('currencyInput').style.backgroundColor = '#fff'
+    }
+  }
+}
+
+function renderPayments () {
+  var target = document.getElementById('paymentWidgets')
+  target.innerHTML = ''
+
+  for (let i = 0; i < projects[findProject(moreOpen)].widgets.length; i++) {
+    if (projects[findProject(moreOpen)].widgets[i].type === 'payment') {
+      var paymentSheet = document.createElement('div')
+      var money = document.createElement('h1')
+      var currency = document.createElement('h3')
+      var remove = document.createElement('button')
+
+      paymentSheet.className = 'paymentSheet'
+
+      remove.textContent = 'Delete'
+      remove.className = 'deleteButton'
+      remove.addEventListener('click', function () {
+        deleteWidget(projects[findProject(moreOpen)].widgets[i].id)
+      })
+      paymentSheet.appendChild(remove)
+
+      var moneyValue = projects[findProject(moreOpen)].widgets[i].money
+      var currencyValue = projects[findProject(moreOpen)].widgets[i].currency
+      var paymentValue = projects[findProject(moreOpen)].widgets[i].payment
+      var id = 'money' + projects[findProject(moreOpen)].widgets[i].id
+
+      money.textContent = moneyValue
+      money.setAttribute('id', id)
+      currency.textContent = currencyValue
+
+      paymentSheet.appendChild(money)
+      paymentSheet.appendChild(currency)
+      if (paymentValue === 'hourly') {
+        var payment = document.createElement('h3')
+        payment.textContent = '/ hour'
+        paymentSheet.appendChild(payment)
+      }
+
+      target.appendChild(paymentSheet)
+    }
+  }
+  for (var i = 0; i < projects[findProject(moreOpen)].widgets.length; i++) {
+    widget = projects[findProject(moreOpen)].widgets[i]
+    if (widget.type === 'payment') {
+      var target = widget.money
+      var id = 'money' + widget.id
+      animateMoney(target, id)
+    }
+  }
+}
+
+function animateMoney (target, id) {
+  var element = document.getElementById(id)
+  var current = 0
+  var startTime = new Date()
+
+  var duration = 5000
+  var smoothing = 20
+
+  loop()
+
+  function loop () {
+    var elapsed = new Date() - startTime + 1
+    if (elapsed < duration) {
+      var linear = duration - elapsed
+      var expo = Math.pow(linear, smoothing) / Math.pow(duration, smoothing)
+
+      element.innerHTML = Math.round(target * (1 - expo))
+      window.requestAnimationFrame(loop)
+    } else {
+      element.innerHTML = target
     }
   }
 }
@@ -634,6 +804,9 @@ function render () {
       }
       if (popup === 'agreement') {
         widgetAgreementNav()
+      }
+      if (popup === 'payment') {
+        widgetPaymentNav()
       }
     }
   } else {

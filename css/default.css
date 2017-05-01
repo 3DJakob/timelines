@@ -105,3 +105,10 @@ input {
   border: none;
   border-radius: 3px;
 }
+
+select {
+  border: none;
+  border-radius: 3px;
+  padding: 5px;
+  -webkit-appearance: none;
+}
